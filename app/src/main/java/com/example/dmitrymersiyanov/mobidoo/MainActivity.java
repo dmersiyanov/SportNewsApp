@@ -6,6 +6,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +15,36 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    NewsAdapter newsAdapter = new NewsAdapter();
+    public final int BIG_CARD = 1;
+    public final int SMALL_CARD = 2;
+    
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        RecyclerView news_rv = findViewById(R.id.rv_news);
+
+        GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return newsAdapter.getItemViewType(position) == BIG_CARD ? 1 : 2;
+            }
+        };
+
+        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        mLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
+
+
+
+        news_rv.setLayoutManager(mLayoutManager);
+        news_rv.setAdapter(newsAdapter);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
