@@ -11,7 +11,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private final int BIG_CARD = 1;
     private final int SMALL_CARD = 2;
 
-    private String[] mDataset = {"Football", "BasketBall", "VolleyBall", "Hockey", "Other news"};
+    private String[] mDataset = {"Football", "BasketBall", "VolleyBall", "Hockey", "Other news", "Other news"};
 
 
 //    public NewsAdapter() {
@@ -40,7 +40,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(position % 2 == 0) return BIG_CARD;
+        if(position % 3 == 0) return BIG_CARD;
         else return SMALL_CARD;
     }
 

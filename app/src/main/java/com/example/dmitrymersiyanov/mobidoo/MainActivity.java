@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity
         GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return newsAdapter.getItemViewType(position) == BIG_CARD ? 1 : 2;
+                return newsAdapter.getItemViewType(position) == BIG_CARD ? 2 : 1;
+//                return position + 1 % 2 > 0 ? 1 : 2;
             }
         };
 
