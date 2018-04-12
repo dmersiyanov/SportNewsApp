@@ -1,6 +1,7 @@
 package com.example.dmitrymersiyanov.mobidoo;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,21 +16,42 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    NewsAdapter newsAdapter = new NewsAdapter();
+    NewsAdapter newsAdapter;
+    RecyclerView news_rv;
     public final int BIG_CARD = 1;
     public final int SMALL_CARD = 2;
-    
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        RecyclerView news_rv = findViewById(R.id.rv_news);
+        initRecycler();
+        initDrawer();
+
+//        Call<News> call = NewsApplication.getNewsApiService().getNews();
+//        Observable<News> newsObservable = NewsApplication.getNewsApiService().getNews().subscribeOn(Schedulers.io())
+//                .flatMap(Observable::fromIterable)
+
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+
+//        try {
+////            News newsList = call.execute().body();
+////            Toast.makeText(this, newsList.getData().get(0).getTitle(), Toast.LENGTH_LONG).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+    }
+
+    private void initRecycler(){
+        news_rv = findViewById(R.id.rv_news);
+        newsAdapter = new NewsAdapter();
 
         GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -42,11 +64,14 @@ public class MainActivity extends AppCompatActivity
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         mLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
 
-
-
         news_rv.setLayoutManager(mLayoutManager);
         news_rv.setAdapter(newsAdapter);
+    }
 
+    public void initDrawer() {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
